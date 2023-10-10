@@ -1,0 +1,11 @@
+[cluster]
+master.cloud.org ansible_user=vagrant ansible_ssh_private_key_file=/root/.ssh/master_private_key
+worker1.cloud.org ansible_user=vagrant ansible_ssh_private_key_file=/root/.ssh/worker1_private_key
+worker2.cloud.org ansible_user=vagrant ansible_ssh_private_key_file=/root/.ssh/worker2_private_key
+
+[master]
+master.cloud.org
+
+[worker]
+worker1.cloud.org
+worker2.cloud.org

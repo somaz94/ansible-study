@@ -1,0 +1,81 @@
+---
+- name : HTCondor Installation
+  hosts : cluster
+  become : yes
+  become_user : root
+  tasks :
+  - name : Disable SELinux
+    shell : setenforce 0
+
+  - name : Disable firewalld
+    service : name=firewalld state=stopped
+
+  - name : Modify /etc/hosts file
+    blockinfile :
+         path: /etc/hosts
+         block: |
+           192.168.56.101 master.cloud.org master
+           192.168.56.102 worker1.cloud.org worker1
+           192.168.56.103 worker2.cloud.org worker2
+
+  - name : Install wget package
+    yum :
+        name=wget
+        state=present
+
+  - name : Download RPM-GPG-KEY
+    get_url :
+        url : https://research.cs.wisc.edu/htcondor/yum/RPM-GPG-KEY-HTCondor
+        dest : /root/RPM-GPG-KEY-HTCondor
+
+  - name : Get Repo
+    get_url:
+        url: https://research.cs.wisc.edu/htcondor/yum/repo.d/htcondor-stable-rhel7.repo
+        dest: /etc/yum.repos.d/htcondor-stable-rhel7.repo
+
+  - name : Install condor
+    yum :
+        name=condor
+        state=present
+
+- name : HTCondor Master Node Setup
+  hosts : master
+  become : yes
+  become_user : root
+  tasks :
+        - name: Creating a configuration file
+          copy:
+               dest: /etc/condor/config.d/condor_config.local
+               content: |
+                 UID_DOMIAN = cloud.org
+                 ALLOW_WRITE = *.cloud.org
+                 CONDOR_ADMIN = root@$(FULL_HOSTNAME)
+                 CONDOR_HOST = master.cloud.org
+                 IN_HIGHPORT = 9999
+                 IN_LOWPORT = 9000
+                 REQUIRE_LOCAL_CONFIG_FILE = False
+                 NETWORK_INTERFACE = eth1
+                 DAEMON_LIST = MASTER, SCHEDD, COLLECTOR, NEGOTIATOR
+        - name : Enabling HTCondor
+          service : name=condor state=started enabled=yes
+
+- name : HTCondor Worker Node Setup
+  hosts : worker
+  become : yes
+  become_user : root
+  tasks :
+        - name: Creating a configuration file
+          copy:
+               dest: /etc/condor/config.d/condor_config.local
+               content: |
+                 UID_DOMIAN = cloud.org
+                 ALLOW_WRITE = *.cloud.org
+                 CONDOR_ADMIN = root@$(FULL_HOSTNAME)
+                 CONDOR_HOST = master.cloud.org
+                 IN_HIGHPORT = 9999
+                 IN_LOWPORT = 9000
+                 REQUIRE_LOCAL_CONFIG_FILE = False
+                 NETWORK_INTERFACE = eth1
+                 DAEMON_LIST = MASTER, STARTD
+        - name : Enabling HTCondor
+          service : name=condor state=started enabled=yes

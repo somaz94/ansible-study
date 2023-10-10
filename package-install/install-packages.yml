@@ -1,0 +1,21 @@
+---
+- name: Install useful packages
+  hosts: all
+  become: yes
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+      when: ansible_os_family == 'Debian'
+
+    - name: Install packages
+      apt:
+        name:
+          - git
+          - htop
+          - curl
+          - vim
+          - tmux
+          - jq
+        state: present
+      when: ansible_os_family == 'Debian'
