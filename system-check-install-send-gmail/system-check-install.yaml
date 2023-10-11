@@ -4,9 +4,9 @@
   become: yes # This ensures that tasks are run with elevated privileges
   vars:
     # Email settings
-    email_sender: 'genius5711@gmail.com'
-    email_password: 'rkmjfyhxtijuqhqp' # This is the Google App Password
-    email_receiver: 'genius5711@gmail.com' 
+    email_sender: ''
+    email_password: '' # This is the Google App Password
+    email_receiver: '' 
     
     # Paths for python and pip on the Ansible Control Machine (ACM)
     acm_python3_path: "/home/somaz/.pyenv/shims/python3"
