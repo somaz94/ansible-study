@@ -1,0 +1,90 @@
+---
+- name: Execute system-check script and email the results
+  hosts: all # This playbook will run on all defined hosts
+  become: yes # This ensures that tasks are run with elevated privileges
+  vars:
+    # Email settings
+    email_sender: 'genius5711@gmail.com'
+    email_password: 'rkmjfyhxtijuqhqp' # This is the Google App Password
+    email_receiver: 'genius5711@gmail.com' 
+    
+    # Paths for python and pip on the Ansible Control Machine (ACM)
+    acm_python3_path: "/home/somaz/.pyenv/shims/python3"
+    acm_pip3_path: "/home/somaz/.pyenv/shims/pip3"
+
+  tasks:
+    - name: Ensure python3 is installed
+      apt:
+        name: python3
+        state: present
+
+    - name: Ensure required packages for SMTP are installed
+      apt:
+        name:
+          - libssl-dev          # Necessary for SSL-related Python packages
+          - libsasl2-dev        # Needed for authentication mechanisms in Python packages
+          - python3-dev         # Python3 development headers
+        state: present
+
+    - name: Ensure pip3 is installed
+      apt:
+        name: python3-pip
+        state: present
+
+    - name: Ensure python packages for SMTP are installed
+      pip:
+        name:
+          - yagmail             # Python library for sending emails easily
+        executable: /usr/bin/pip3
+
+    - name: Display PATH variable
+      local_action:
+        module: debug
+        var: ansible_env.PATH
+
+    - name: Ensure python packages for SMTP are installed on ACM
+      delegate_to: localhost  # Execute this on the Ansible Control Machine
+      pip:
+        name:
+          - yagmail             # Ensuring the same email library exists on the ACM
+        executable: "{{ acm_pip3_path }}"
+
+    - name: Copy system-check.py script to remote server
+      copy:
+        src: system-check.py
+        dest: /tmp/system-check.py
+        mode: '0755'
+
+    - name: Execute the system-check.py script and save to a log file
+      shell:
+        cmd: python3 /tmp/system-check.py > /tmp/system-check.log
+      register: script_output  # Save the result of this task for later use
+
+    - name: Fetch the log to local system
+      fetch:
+        src: /tmp/system-check.log
+        dest: "/tmp/system-check-{{ ansible_hostname }}.log"
+        flat: yes
+
+    - name: Wait for a few seconds
+      wait_for:
+        timeout: 10
+      delegate_to: localhost  # This task is executed on the ACM
+      run_once: true          # This will ensure it only runs once, even if there are multiple hosts
+
+    - name: Send email using python script
+      local_action:
+        module: command
+        cmd: |
+          {{ acm_python3_path }} -c "
+          import yagmail
+          body = 'See the attached log for the system check results'
+          filename = '/tmp/system-check-{{ ansible_hostname }}.log'
+          yag = yagmail.SMTP('{{ email_sender }}', '{{ email_password }}')
+          yag.send(
+              to='{{ email_receiver }}',
+              subject='System Check Result - {{ ansible_hostname }}',
+              contents=body,
+              attachments=filename
+          )"
+      when: script_output.changed  # Only send email if the script has changed the system state
