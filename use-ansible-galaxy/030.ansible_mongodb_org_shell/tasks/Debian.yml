@@ -1,0 +1,18 @@
+---
+- name: Install gnupg
+  apt:
+    name: gnupg
+    update_cache: true
+
+- name: Add mongo apt key
+  apt_key:
+    url: https://www.mongodb.org/static/pgp/server-4.2.asc
+
+- name: Add mongo apt repository
+  apt_repository:
+    repo: deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/4.2 multiverse  # yamllint disable-line rule:line-length
+
+- name: Install mongodb org shell
+  apt:
+    name: mongodb-org-shell
+    update_cache: true

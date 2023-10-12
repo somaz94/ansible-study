@@ -1,0 +1,5 @@
+---
+- hosts: test_servers
+  become: yes
+  roles:
+    - 030.ansible_mongodb_org_shell
