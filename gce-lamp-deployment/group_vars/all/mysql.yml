@@ -1,0 +1,3 @@
+new_user: "somaz"
+new_database: "somaz-db"
+mysql_port: 3306

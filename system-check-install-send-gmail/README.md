@@ -7,7 +7,7 @@ This directory provides an Ansible playbook that executes a system-check script 
 ## Directory Structure 📂
 
 - `hosts.ini`: Inventory file which contains a list of hosts where the playbook should be executed.
-- `system-check-install.yaml`: Ansible playbook that coordinates the entire system check and email sending process.
+- `system-check-install.yml`: Ansible playbook that coordinates the entire system check and email sending process.
 - `system-check.py`: Python script that conducts a system check and produces a detailed log.
 
 <br/>
@@ -34,7 +34,7 @@ This directory provides an Ansible playbook that executes a system-check script 
 
 3. Navigate to this directory and run:
 ```bash
-ansible-playbook -i hosts.ini system-check-install.yaml
+ansible-playbook -i hosts.ini system-check-install.yml
 ```
 
 <br/>
