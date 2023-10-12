@@ -24,15 +24,21 @@ This guide illustrates how to deploy a LAMP (Linux, Apache, MySQL, PHP) stack on
 Create compute engines with terraform:
 ```bash
 cd terraform-compute-engine
+```
+- Modify the variable values in the variables.tf file as necessary.
+
+Initialize and apply Terraform configurations:
+```bash
 terraform init && terraform fmt
 terraform validate
 terraform apply
 ```
-- Modify the variable values in the variables.tf file.
 
 ### 2. Copy SSH Key to Server
 
-Ensure you can SSH into the target server without a password:
+Ensure you can SSH into the target server without a password. 
+
+Replace <YOUR_SERVER_NAME_OR_IP> with your server name or IP:
 ```bash
 ssh-copy-id test-server
 ```
@@ -42,10 +48,10 @@ ssh-copy-id test-server
 You need to encrypt the MySQL root and user passwords:
 ```bash
 # Encrypt the root password
-ansible-vault encrypt_string 'somaz@2023' --name 'mysql_root_password'
+ansible-vault encrypt_string 'RootPassword123' --name 'mysql_root_password'
 
 # Encrypt the user password
-ansible-vault encrypt_string 'somaz@2023' --name 'new_user_password'
+ansible-vault encrypt_string 'UserPassword456' --name 'new_user_password'
 ```
 - Ensure you remember the vault password; you'll need it to run the playbook.
 
