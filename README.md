@@ -10,6 +10,7 @@ This repository contains study materials related to Ansible. It provides various
 - `package-install`: Scripts for installing required packages on servers.
 - `system-check-install-send-gmail`: Scripts related to system checks and functionalities to send results via Gmail.
 - `gce-lamp-deployment`: Scripts and playbooks for deploying a LAMP stack on Google Compute Engine.
+- `use-ansible-galaxy`: Contains materials and examples for using Ansible Galaxy roles.
 
 <br/>
 

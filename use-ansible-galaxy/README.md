@@ -1,4 +1,4 @@
-# Using the Ansible Galaxy Role (`030.ansible_mongodb_org_shell`)
+# Using the Ansible Galaxy Role
 
 This guide provides step-by-step instructions on how to use the `030.ansible_mongodb_org_shell` role from Ansible Galaxy to install and configure the MongoDB shell (`mongosh`).
 
