@@ -1,0 +1,17 @@
+---
+- name: Get home directory of specific user
+  shell: "eval echo ~{{ home_user }}"
+  register: user_home
+  changed_when: false
+
+- name: Install krew plugins
+  shell: "kubectl krew install {{ item }}"
+  with_items: "{{ krew_plugins }}"
+  when: krew_plugins is defined
+  args:
+    executable: /bin/bash
+  environment:
+    KREW_ROOT: "{{ user_home.stdout }}/.krew"
+  become: no
+
+

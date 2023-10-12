@@ -1,0 +1,5 @@
+---
+- name: reload bashrc
+  command: 
+    cmd: "source ~/.bashrc"
+    warn: false
