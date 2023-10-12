@@ -10,22 +10,34 @@ This guide illustrates how to deploy a LAMP (Linux, Apache, MySQL, PHP) stack on
 
 ## Pre-requisites
 
-1. SSH Key pair.
-2. Ansible installed on your local machine.
-3. Properly configured `inventory.ini` file.
+1. Apply `terraform-compute-engine` Source
+2. SSH Key pair.
+3. Ansible installed on your local machine.
+4. Properly configured `inventory.ini` file.
 
 <br/>
 
 ## Setup
 
-### 1. Copy SSH Key to Server
+### 1. Apply terraform-compute-engine Source
+
+Create compute engines with terraform:
+```bash
+cd terraform-compute-engine
+terraform init && terraform fmt
+terraform validate
+terraform apply
+```
+- Modify the variable values in the variables.tf file.
+
+### 2. Copy SSH Key to Server
 
 Ensure you can SSH into the target server without a password:
 ```bash
 ssh-copy-id test-server
 ```
 
-### 2. Encrypt Database Credentials
+### 3. Encrypt Database Credentials
 
 You need to encrypt the MySQL root and user passwords:
 ```bash
@@ -37,14 +49,14 @@ ansible-vault encrypt_string 'somaz@2023' --name 'new_user_password'
 ```
 - Ensure you remember the vault password; you'll need it to run the playbook.
 
-### 3. Test Ansible Connection
+### 4. Test Ansible Connection
 
 Before deploying, ensure Ansible can communicate with your server:
 ```bash
 ansible all -i inventory.ini -m ping
 ```
 
-### 4. Run the Ansible Playbook
+### 5. Run the Ansible Playbook
 
 Execute the playbook:
 ```bash
@@ -52,7 +64,7 @@ ansible-playbook -i inventory.ini site.yml --ask-vault-pass
 ```
 - When prompted, enter the vault password.
 
-### 5. Verify Installation
+### 6. Verify Installation
 
 After the playbook runs successfully, verify that you can access the MySQL server:
 ```bash
