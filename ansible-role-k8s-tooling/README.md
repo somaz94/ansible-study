@@ -40,12 +40,24 @@ None.
 ansible-playbook -i inventory.ini site.yml
 ```
 
+After the tasks have been completed, apply the changes on the installed machine by running:
+```bash
+source ~/.bashrc
+```
+- This command will apply any changes made in the .bashrc file to the current shell session.
+
 ### Applying on Local System
 1. Use the provided inventory.ini.local which is already set to target localhost.
 2. Run the playbook using:
 ```bash
 ansible-playbook -i inventory.ini.local site.yml.local
 ```
+
+After the tasks have been completed, apply the changes on the installed machine by running:
+```bash
+source ~/.bashrc
+```
+- This command will apply any changes made in the .bashrc file to the current shell session.
 
 <br/>
 
