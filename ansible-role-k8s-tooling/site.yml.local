@@ -1,6 +1,5 @@
 ---
-- hosts: test_servers
-  become: yes
+- hosts: localhost
   roles:
     - setup_bashrc
     - install_kubectl
