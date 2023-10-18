@@ -69,6 +69,48 @@ source ~/.bashrc
 
 <br/>
 
+## Molecule Usage
+Molecule is used for developing and testing Ansible roles.
+
+### Setup Molecule
+Install Molecule:
+```bash
+pip install molecule
+```
+
+### Install the Docker driver for Molecule:
+```bash
+pip install molecule[docker]
+```
+
+### Using Molecule
+
+#### 1.Navigate to the role's directory.
+
+#### 2.Create a new Molecule:
+```bash
+molecule create
+```
+
+#### 3.Test the role using:
+```bash
+molecule converge
+```
+
+#### 4. Run tests:
+```bash
+molecule verify
+```
+
+#### 5. Clean up the test environment:
+```bash
+molecule destroy
+```
+
+- For further details, refer to the [Molecule documentation](https://molecule.readthedocs.io/en/latest/).
+
+<br/>
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
