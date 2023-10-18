@@ -16,8 +16,13 @@
       when: ansible_os_family == 'RedHat'
 
   roles:
+    - role: roles/setup_bashrc 
     - role: roles/install_kubectl
     - role: roles/install_krew
     - role: roles/install_krew_plugins
-    - role: roles/install_packages
-    - role: roles/setup_bashrc 
+    - role: roles/install_terraform
+    - role: roles/install_packer
+    - role: roles/install_vargant
+    - role: roles/install_helm
+    - role: roles/install_pulumi
+    - role: roles/install_kustomize

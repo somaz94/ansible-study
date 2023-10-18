@@ -2,12 +2,20 @@
 
 This Ansible role sets up various Kubernetes tooling components including kubectl, krew, krew plugins, and additional packages.
 
+- kubectl
+- krew, krew plugins
+- terraform
+- helm
+- packer
+- kustomize
+- pulumi
+
 <br/>
 
 ## Requirements
 
 - Ansible 2.9 or higher
-- Targeted OS: Ubuntu (For now)
+- Targeted OS: Deiban/Ubuntu, RHEL/CentOS (For now)
 
 <br/>
 

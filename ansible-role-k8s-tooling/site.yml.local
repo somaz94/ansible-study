@@ -6,4 +6,9 @@
     - install_kubectl
     - install_krew
     - install_krew_plugins
-    - install_packages
+    - install_terraform
+    - install_packer
+    - install_vagrant
+    - install_helm
+    - install_kustomize
+    - install_pulumi
